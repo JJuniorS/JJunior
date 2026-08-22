@@ -1,4 +1,5 @@
 ---
+translationKey: welcome-post
 title: "Bem-vindo ao JJ Log"
 description: "O que é este blog, por que existe, e o que você pode esperar encontrar aqui."
 pubDate: 2026-08-22
@@ -38,8 +39,8 @@ Assuntos que provavelmente aparecerão no blog:
 | Área        | Exemplos                          |
 | ----------- | --------------------------------- |
 | Backend     | APIs, RAG, integrações            |
-| Frontend    | Angular, UX, componentes            |
-| Infra       | GitHub Actions, deploy estático     |
+| Frontend    | Angular, UX, componentes          |
+| Infra       | GitHub Actions, deploy estático   |
 | Aprendizado | Notas de estudo, experimentos     |
 
 ## Como funciona por baixo dos panos
@@ -47,7 +48,7 @@ Assuntos que provavelmente aparecerão no blog:
 Cada artigo é um arquivo Markdown no repositório. Para publicar, basta criar um `.md`, adicionar frontmatter e fazer push:
 
 ```bash
-git add src/content/blog/meu-artigo.md
+git add src/content/blog/pt/meu-artigo.md
 git commit -m "add: meu novo artigo"
 git push
 ```

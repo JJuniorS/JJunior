@@ -1,0 +1,37 @@
+---
+import { htmlLang, locales, type Locale } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang: Locale;
+  alternatePaths: Partial<Record<Locale, string>>;
+}
+
+const { lang, alternatePaths } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="lang-switch" role="group" aria-label={t.switchLanguage}>
+  {
+    locales.map((locale, index) => (
+      <>
+        {index > 0 && <span class="lang-switch-sep" aria-hidden="true">|</span>}
+        {locale === lang ? (
+          <span class="lang-switch-active" aria-current="true">
+            {locale}
+          </span>
+        ) : alternatePaths[locale] ? (
+          <a
+            href={alternatePaths[locale]}
+            class="lang-switch-link"
+            hreflang={htmlLang[locale]}
+          >
+            {locale}
+          </a>
+        ) : (
+          <span class="lang-switch-disabled">{locale}</span>
+        )}
+      </>
+    ))
+  }
+</div>

@@ -2,35 +2,50 @@
 import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { htmlLang, type Locale } from '../i18n/config';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description: string;
+  lang: Locale;
   canonical?: string;
+  alternateUrls?: Partial<Record<Locale, string>>;
+  alternatePaths: Partial<Record<Locale, string>>;
   type?: 'website' | 'article';
   pubDate?: Date;
 }
 
-const { title, description, canonical, type, pubDate } = Astro.props;
+const {
+  title,
+  description,
+  lang,
+  canonical,
+  alternateUrls,
+  alternatePaths,
+  type,
+  pubDate,
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={htmlLang[lang]}>
   <head>
     <Seo
       title={title}
       description={description}
+      lang={lang}
       canonical={canonical}
+      alternateUrls={alternateUrls}
       type={type}
       pubDate={pubDate}
     />
   </head>
   <body>
-    <Header />
+    <Header lang={lang} alternatePaths={alternatePaths} />
     <main class="container">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
   </body>
 </html>

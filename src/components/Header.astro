@@ -1,13 +1,24 @@
 ---
-const base = import.meta.env.BASE_URL;
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { type Locale } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+import { localizedPath } from '../i18n/utils';
+
+interface Props {
+  lang: Locale;
+  alternatePaths: Partial<Record<Locale, string>>;
+}
+
+const { lang, alternatePaths } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href={base} class="site-logo">JJ Log</a>
-    <nav aria-label="Principal">
-      <a href={base}>Artigos</a>
-      <a href={`${base}rss.xml`}>RSS</a>
+    <a href={localizedPath(lang)} class="site-logo">JJ Log</a>
+    <nav aria-label={t.navLabel}>
+      <a href={localizedPath(lang)}>{t.articles}</a>
+      <LanguageSwitcher lang={lang} alternatePaths={alternatePaths} />
     </nav>
   </div>
 </header>

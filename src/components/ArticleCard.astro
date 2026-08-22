@@ -1,13 +1,18 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { dateLocale, type Locale } from '../i18n/config';
+import { useTranslations } from '../i18n/ui';
+import { getPostSlug, localizedPath } from '../i18n/utils';
 
 interface Props {
   post: CollectionEntry<'blog'>;
+  lang: Locale;
 }
 
-const { post } = Astro.props;
-const base = import.meta.env.BASE_URL;
-const formattedDate = post.data.pubDate.toLocaleDateString('pt-BR', {
+const { post, lang } = Astro.props;
+const t = useTranslations(lang);
+const slug = getPostSlug(post);
+const formattedDate = post.data.pubDate.toLocaleDateString(dateLocale[lang], {
   day: 'numeric',
   month: 'long',
   year: 'numeric',
@@ -18,11 +23,11 @@ const formattedDate = post.data.pubDate.toLocaleDateString('pt-BR', {
 <article class="article-card">
   <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
   <h2>
-    <a href={`${base}blog/${post.id}/`}>{post.data.title}</a>
+    <a href={localizedPath(lang, `blog/${slug}`)}>{post.data.title}</a>
   </h2>
   <p>{post.data.description}</p>
   {post.data.tags.length > 0 && (
-    <ul class="tag-list" aria-label="Tags">
+    <ul class="tag-list" aria-label={t.tags}>
       {post.data.tags.map((tag) => (
         <li class="tag">{tag}</li>
       ))}
