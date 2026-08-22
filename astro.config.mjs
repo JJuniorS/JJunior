@@ -4,8 +4,9 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // Substitua "seu-usuario" pelo seu username do GitHub antes do deploy
-  site: 'https://seu-usuario.github.io',
+  site: 'https://juniors.github.io',
+  base: '/JJLog',
+  trailingSlash: 'always',
   integrations: [sitemap()],
   markdown: {
     shikiConfig: {
