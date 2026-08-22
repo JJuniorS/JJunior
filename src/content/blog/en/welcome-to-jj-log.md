@@ -1,6 +1,6 @@
 ---
 translationKey: welcome-post
-title: "Welcome to JJ Log"
+title: "Welcome to JJunior"
 description: "What this blog is, why it exists, and what you can expect to find here."
 pubDate: 2026-08-22
 tags:
@@ -9,9 +9,9 @@ tags:
 draft: false
 ---
 
-## What is JJ Log
+## What is JJunior
 
-**JJ Log** is my personal technical journal — a place to publish articles about software development, architecture, AI, .NET, Angular, DevOps, and projects I'm building or studying.
+**JJunior** is my personal technical journal — a place to publish articles about software development, architecture, AI, .NET, Angular, DevOps, and projects I'm building or studying.
 
 The idea is simple: everything I learn, experiment with, or build can become an article.
 
@@ -68,4 +68,4 @@ app.Run();
 
 For external reference, check the [Astro documentation](https://docs.astro.build).
 
-Welcome to **JJ Log**. I hope you find something useful here.
+Welcome to **JJunior**. I hope you find something useful here.

@@ -20,7 +20,7 @@ export async function GET(context: {
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   return rss({
-    title: 'JJ Log',
+    title: 'JJunior',
     description: t.siteDescription,
     site: localizedUrl(context.site, lang),
     items: posts.map((post) => ({

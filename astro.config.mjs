@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://juniors.github.io',
-  base: '/JJLog',
+  base: '/JJunior',
   trailingSlash: 'always',
   i18n: {
     locales: ['pt', 'en'],

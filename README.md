@@ -1,4 +1,4 @@
-# JJ Log
+# JJunior
 
 Um diário técnico sobre código, tecnologia, aprendizado e projetos.
 
@@ -89,7 +89,7 @@ Substitua `seu-usuario` pelo seu username do GitHub.
 
 Também atualize a URL do sitemap em [`public/robots.txt`](public/robots.txt).
 
-> Se o repositório **não** for `seu-usuario.github.io` (ex: `seu-usuario/JJLog`), o GitHub Pages servirá em um subpath (`/JJLog/`). Nesse caso, adicione `base: '/JJLog/'` de volta no `astro.config.mjs`.
+> Se o repositório **não** for `seu-usuario.github.io` (ex: `seu-usuario/JJunior`), o GitHub Pages servirá em um subpath (`/JJunior/`). Nesse caso, adicione `base: '/JJunior/'` de volta no `astro.config.mjs`.
 
 ### Deploy automático
 
@@ -114,4 +114,4 @@ Criar arquivo .md → Adicionar frontmatter → Git commit → Push → Build As
 
 ## Licença
 
-Projeto pessoal — JJ Log.
+Projeto pessoal — JJunior.

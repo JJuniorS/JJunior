@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://juniors.github.io/JJLog/sitemap-index.xml
+Sitemap: https://juniors.github.io/JJunior/sitemap-index.xml

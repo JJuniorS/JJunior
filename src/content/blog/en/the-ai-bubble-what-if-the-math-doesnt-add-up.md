@@ -5,6 +5,8 @@ description: "What the AI bubble is, who funds the infrastructure — and what c
 pubDate: 2026-08-22
 tags:
   - AI
+  - LLM
+  - Local
 draft: false
 ---
 
@@ -50,7 +52,7 @@ And that completely changes the question.
 
 > Will revenue from consumers, companies, and APIs be enough to justify hundreds of billions of dollars in investment?
 
-![Investment in AI infrastructure](/JJLog/images/investimento-em-ia.png)
+![Investment in AI infrastructure](/JJunior/images/investimento-em-ia.png)
 
 ## What if the math doesn't add up
 

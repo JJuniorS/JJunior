@@ -26,7 +26,7 @@ export function findTranslation(
   );
 }
 
-/** Path relative to the site root (includes base), e.g. /JJLog/pt/blog/foo/ */
+/** Path relative to the site root (includes base), e.g. /JJunior/pt/blog/foo/ */
 export function localePath(lang: Locale, path?: string): string {
   if (!path) {
     return `${lang}/`;

@@ -5,6 +5,8 @@ description: "O que é a bolha da IA, quem financia a infraestrutura — e o que
 pubDate: 2026-08-22
 tags:
   - IA
+  - LLM
+  - Local
 draft: false
 ---
 
@@ -50,7 +52,7 @@ E isso muda completamente a pergunta.
 
 > A receita gerada por consumidores, empresas e APIs será suficiente para justificar centenas de bilhões de dólares em investimentos?
 
-![Investimento em infraestrutura de IA](/JJLog/images/investimento-em-ia.png)
+![Investimento em infraestrutura de IA](/JJunior/images/investimento-em-ia.png)
 
 ## E se a conta não bater
 
