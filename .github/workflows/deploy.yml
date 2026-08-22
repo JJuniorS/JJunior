@@ -21,13 +21,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Install, build, and upload
+        uses: withastro/action@v6
         with:
           node-version: 22
-
-      - name: Install and build
-        uses: withastro/action@v3
 
   deploy:
     needs: build
