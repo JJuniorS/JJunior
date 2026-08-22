@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+
+const siteDescription =
+  'Um diário técnico sobre código, tecnologia, aprendizado e projetos.';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout title="JJ Log" description={siteDescription}>
+  <section class="hero">
+    <h1>JJ Log</h1>
+    <p>{siteDescription}</p>
+  </section>
+
+  <section class="articles-section">
+    <h2>Artigos</h2>
+    {posts.length === 0 ? (
+      <p class="empty-state">Nenhum artigo publicado ainda. Em breve!</p>
+    ) : (
+      <div class="article-list">
+        {posts.map((post) => (
+          <ArticleCard post={post} />
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>
