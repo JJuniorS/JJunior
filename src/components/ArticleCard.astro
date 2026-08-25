@@ -18,14 +18,45 @@ const formattedDate = post.data.pubDate.toLocaleDateString(dateLocale[lang], {
   year: 'numeric',
   timeZone: 'UTC',
 });
+
+function highlightRag(text: string) {
+  return text.split(/(RAG)/g).map((part) =>
+    part === 'RAG'
+      ? { type: 'mark' as const, value: part }
+      : { type: 'text' as const, value: part },
+  );
+}
+
+const titleParts = highlightRag(post.data.title);
+const descriptionParts = highlightRag(post.data.description);
 ---
 
 <article class="article-card">
   <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
   <h2>
-    <a href={localizedPath(lang, `blog/${slug}`)}>{post.data.title}</a>
+    <a href={localizedPath(lang, `blog/${slug}`)}>
+      {
+        titleParts.map((part) =>
+          part.type === 'mark' ? (
+            <span class="term-rag">{part.value}</span>
+          ) : (
+            part.value
+          ),
+        )
+      }
+    </a>
   </h2>
-  <p>{post.data.description}</p>
+  <p>
+    {
+      descriptionParts.map((part) =>
+        part.type === 'mark' ? (
+          <span class="term-rag">{part.value}</span>
+        ) : (
+          part.value
+        ),
+      )
+    }
+  </p>
   {post.data.tags.length > 0 && (
     <ul class="tag-list" aria-label={t.tags}>
       {post.data.tags.map((tag) => (

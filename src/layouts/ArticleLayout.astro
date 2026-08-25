@@ -49,6 +49,16 @@ const formattedDate = pubDate.toLocaleDateString(dateLocale[lang], {
   year: 'numeric',
   timeZone: 'UTC',
 });
+
+/** Destaca a palavra RAG no título/descrição do artigo. */
+function highlightRag(text: string) {
+  return text.split(/(RAG)/g).map((part) =>
+    part === 'RAG' ? { type: 'mark' as const, value: part } : { type: 'text' as const, value: part },
+  );
+}
+
+const titleParts = highlightRag(title);
+const descriptionParts = highlightRag(description);
 ---
 
 <BaseLayout
@@ -64,8 +74,24 @@ const formattedDate = pubDate.toLocaleDateString(dateLocale[lang], {
   <article class="article">
     <header class="article-header">
       <time datetime={pubDate.toISOString()}>{formattedDate}</time>
-      <h1>{title}</h1>
-      <p class="article-description">{description}</p>
+      <h1>
+        {titleParts.map((part) =>
+          part.type === 'mark' ? (
+            <span class="term-rag">{part.value}</span>
+          ) : (
+            part.value
+          ),
+        )}
+      </h1>
+      <p class="article-description">
+        {descriptionParts.map((part) =>
+          part.type === 'mark' ? (
+            <span class="term-rag">{part.value}</span>
+          ) : (
+            part.value
+          ),
+        )}
+      </p>
       {tags.length > 0 && (
         <ul class="tag-list" aria-label={t.tags}>
           {tags.map((tag) => (

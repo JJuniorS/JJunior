@@ -1,0 +1,51 @@
+name: Create Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    # Evita release quando o commit pede explicitamente (A+C)
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.head_commit != null &&
+        !contains(github.event.head_commit.message, '[skip release]')
+      )
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump patch version and push tag
+        id: tag
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
+          # Sempre patch (não depende de Conventional Commits)
+          release_type: patch
+          tag_prefix: v
+          fetch_all_tags: true
+
+      - name: Create GitHub Release
+        if: steps.tag.outputs.new_tag != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.new_tag }}
+          name: ${{ steps.tag.outputs.new_tag }}
+          body: ${{ steps.tag.outputs.changelog }}
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
