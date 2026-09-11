@@ -109,3 +109,7 @@ The first we love to automate. The second needs a conscious manual trigger — n
 > The best rollback plan is the one you never use. The second best is the one you use without having to think.
 
 This piece exists because I wanted the second. And because the first, on its own, is just hope.
+
+---
+
+*P.S. — 11 Sep 2026: if this paragraph is live, the site is on the new version. A rollback to the previous release should make exactly this P.S. disappear.*

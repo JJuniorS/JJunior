@@ -42,9 +42,12 @@ jobs:
         env:
           INPUT_TAG: ${{ inputs.tag }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
 
+          # Este step roda antes do checkout. Sem GH_REPO/-R, o gh não sabe
+          # o repositório e a listagem volta vazia (erro falso de "1 release").
           if [[ -n "${INPUT_TAG}" ]]; then
             if [[ ! "${INPUT_TAG}" =~ ^[A-Za-z0-9._-]+$ ]]; then
               echo "::error::Tag inválida: ${INPUT_TAG}"
@@ -57,13 +60,15 @@ jobs:
             TAG="${INPUT_TAG}"
             echo "Usando a tag informada: ${TAG}"
           else
-            mapfile -t TAGS < <(gh release list --exclude-drafts --limit 2 --json tagName --jq '.[].tagName')
-            if [[ "${#TAGS[@]}" -lt 2 ]]; then
-              echo "::error::Não há release anterior para restaurar (é preciso pelo menos 2 releases)."
+            LIST_JSON="$(gh release list --exclude-drafts --limit 5 --json tagName)"
+            echo "Releases encontradas: ${LIST_JSON}"
+            LATEST="$(jq -r '.[0].tagName // empty' <<< "${LIST_JSON}")"
+            TAG="$(jq -r '.[1].tagName // empty' <<< "${LIST_JSON}")"
+            COUNT="$(jq -r 'length' <<< "${LIST_JSON}")"
+            if [[ -z "${TAG}" ]]; then
+              echo "::error::Não há release anterior para restaurar (encontradas: ${COUNT})."
               exit 1
             fi
-            LATEST="${TAGS[0]}"
-            TAG="${TAGS[1]}"
             echo "Release mais recente (provavelmente a ruim): ${LATEST}"
             echo "Rollback para a release anterior: ${TAG}"
           fi

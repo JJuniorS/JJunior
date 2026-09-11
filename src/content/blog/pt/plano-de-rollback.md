@@ -109,3 +109,7 @@ A primeira a gente ama automatizar. A segunda precisa de um gatilho manual consc
 > O melhor plano de rollback é o que você nunca usa. O segundo melhor é o que você usa sem precisar pensar.
 
 Esse texto existe porque eu quis o segundo. E porque o primeiro, sozinho, é só esperança.
+
+---
+
+*P.S. — 11/09/2026: se este parágrafo está no ar, o site está na versão nova. Um rollback para a release anterior deve fazer exatamente este P.S. desaparecer.*
