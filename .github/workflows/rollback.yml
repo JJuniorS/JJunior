@@ -1,0 +1,101 @@
+# Rollback manual do GitHub Pages para uma release anterior.
+#
+# Não é uma etapa que fica pausada no mesmo run do deploy: no GitHub Actions
+# isso não existe de forma confiável. Este workflow fica sempre disponível em
+# Actions → Rollback GitHub Pages → Run workflow.
+#
+# Uso:
+#   1. Actions → "Rollback GitHub Pages" → Run workflow
+#   2. Tag vazia = penúltima GitHub Release (a anterior à mais recente)
+#   3. Ou informe uma tag específica (ex: v1.2.3)
+#
+# Importante: isto republica o site estático. Não faz git revert na main.
+# Sem um revert/hotfix, o próximo push em main volta a publicar o código novo.
+
+name: Rollback GitHub Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag para restaurar (vazio = release anterior à mais recente)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.resolve.outputs.tag }}
+    steps:
+      - name: Resolve rollback tag
+        id: resolve
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [[ -n "${INPUT_TAG}" ]]; then
+            if [[ ! "${INPUT_TAG}" =~ ^[A-Za-z0-9._-]+$ ]]; then
+              echo "::error::Tag inválida: ${INPUT_TAG}"
+              exit 1
+            fi
+            if ! gh release view "${INPUT_TAG}" --json tagName >/dev/null; then
+              echo "::error::Release ${INPUT_TAG} não encontrada."
+              exit 1
+            fi
+            TAG="${INPUT_TAG}"
+            echo "Usando a tag informada: ${TAG}"
+          else
+            mapfile -t TAGS < <(gh release list --exclude-drafts --limit 2 --json tagName --jq '.[].tagName')
+            if [[ "${#TAGS[@]}" -lt 2 ]]; then
+              echo "::error::Não há release anterior para restaurar (é preciso pelo menos 2 releases)."
+              exit 1
+            fi
+            LATEST="${TAGS[0]}"
+            TAG="${TAGS[1]}"
+            echo "Release mais recente (provavelmente a ruim): ${LATEST}"
+            echo "Rollback para a release anterior: ${TAG}"
+          fi
+
+          {
+            echo "## Rollback GitHub Pages"
+            echo ""
+            echo "- Tag restaurada: \`${TAG}\`"
+            echo "- Disparado por: @${GITHUB_ACTOR}"
+            echo ""
+            echo "Isto republica o site. Não reverte commits na \`main\`."
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+          echo "tag=${TAG}" >> "${GITHUB_OUTPUT}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.resolve.outputs.tag }}
+
+      - name: Install, build, and upload
+        uses: withastro/action@v6
+        with:
+          node-version: 22
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
